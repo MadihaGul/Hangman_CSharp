@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Media;
 
 namespace Hangman_CSharp
 {
@@ -55,10 +56,10 @@ namespace Hangman_CSharp
 
         public static void TitleMenu()
         {
+            SystemSounds.Hand.Play();
             // Display title 
             Console.WriteLine("\n  HANGMAN\r");
-            Console.Write(" ---------\n");
-            Console.Write(" ---------\n\n");
+            Console.Write(" =========\n");
         }
         static int UserChoice()
         {
