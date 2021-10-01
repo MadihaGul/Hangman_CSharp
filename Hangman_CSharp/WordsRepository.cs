@@ -11,6 +11,8 @@ namespace Hangman_CSharp
     class WordsRepository
     {        
         static string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+
+        // Reads data from relevant CSV File based wordsRepository
         private static string[] ReadFromFile_csv(string wordsRepository)
         {
             string data = "";
@@ -33,7 +35,7 @@ namespace Hangman_CSharp
             }
             return data.Split(",");
         }
-
+        // Saves CSV file contents in string array based on language calls relevant word repository
         public static string[]  GetWords(int language)         
         {
             string[] words = language

@@ -7,7 +7,6 @@ namespace Hangman_CSharp
     {
         static void Main(string[] args)
         {
-
             bool exitApp = false;
             while (!exitApp)  // Control Application Exit
             {
@@ -54,13 +53,16 @@ namespace Hangman_CSharp
             return;
         }
 
+        // Display title 
         public static void TitleMenu()
         {
             SystemSounds.Hand.Play();
-            // Display title 
+            
             Console.WriteLine("\n  HANGMAN\r");
             Console.Write(" =========\n");
         }
+
+        // Gets user choice
         static int UserChoice()
         {
             int chLanguage = -1;
@@ -81,6 +83,8 @@ namespace Hangman_CSharp
             return chLanguage;
 
         }
+
+        // Checks if nothing entered by user 
         public static string ChkUserinput(string Userinput)
         {
             while (Userinput == "")

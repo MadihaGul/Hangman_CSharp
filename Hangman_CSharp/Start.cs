@@ -13,8 +13,9 @@ namespace Hangman_CSharp
         static string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
         bool isGuessed = false;
-        public static void StartGame(int Language)
+        public static void StartGame(int Language) // Starts Game
         {
+            int maxTries = 10;
             StringBuilder guessedWrong = new StringBuilder();
             Start ob = new Start();
             //WordsRepository.SaveFile(Language);
@@ -24,7 +25,7 @@ namespace Hangman_CSharp
             
             player1.tries = 10;
             int ifGuessRight = 0;
-            var secretWord = GetSecretWord(Language);
+            var secretWord = GetSecretWord(Language);  // Gets secret word
             char[] secretWordChar = secretWord.ToCharArray();
             char[] guessedRight = new char[secretWord.Length];
             for (int i = 0; i < secretWord.Length; i++)
@@ -32,27 +33,27 @@ namespace Hangman_CSharp
                 guessedRight[i] = Convert.ToChar("_");
             }
             SystemSounds.Asterisk.Play();
-            for (player1.tries = 10; player1.tries > 0; player1.tries--)
+            for (player1.tries = maxTries; player1.tries > 0; player1.tries--)
             {
                 if (!IfGussed(secretWord,guessedRight))
                 {
-                    DisplayToPlayer(secretWord, ob.isGuessed, player1.tries, guessedRight, guessedWrong, player1.playerName);
-                    string guess = GetGuessFromPlayer(guessedRight, guessedWrong);
-                    bool ifGuessExists = IfGuessExists(guess, guessedRight, guessedWrong);
-                    if (ifGuessExists) { player1.tries += 1; SystemSounds.Asterisk.Play(); }
+                    DisplayToPlayer(secretWord, ob.isGuessed, player1.tries, guessedRight, guessedWrong, player1.playerName); // Displays output to user
+                    string guess = GetGuessFromPlayer(guessedRight, guessedWrong); // Takes input from user as guess
+                    bool ifGuessExists = IfGuessExists(guess, guessedRight, guessedWrong); // checks if the user has already guessed this input 
+                    if (ifGuessExists) { player1.tries += 1; SystemSounds.Asterisk.Play(); Console.WriteLine("\n Already guessed!! Try again. "); } // no try is consumed
                     else
                     {
-                        ifGuessRight = IfGuessRight(secretWord, guess);
+                        ifGuessRight = IfGuessRight(secretWord, guess); // checks if user guessed right 
                         switch (ifGuessRight)
                         {
                             case 0: guessedWrong.Append(guess); guessedWrong.AppendFormat(","); break;
-                            case 1: guessedRight = UpdateguessedRight(guessedRight, guess, secretWord); break;
-                            case 2:
+                            case 1: guessedRight = UpdateguessedRight(guessedRight, guess, secretWord); break; // if the secret word contains letter guessed by user
+                            case 2:// if user guess full word successfully before tries end
                                 player1.tries = 0;
                                 ob.isGuessed = true;
                                 DisplayToPlayer(secretWord, ob.isGuessed, player1.tries, guessedRight, guessedWrong, player1.playerName);
                                 break;
-                            default: guessedWrong.Append(guess); guessedWrong.AppendFormat(","); break;
+                            default: guessedWrong.Append(guess); guessedWrong.AppendFormat(","); break; // if user entered wrong
 
                         }
 
@@ -60,12 +61,12 @@ namespace Hangman_CSharp
 
                     if (!ob.isGuessed && !ifGuessExists)
                     {
-                        Refresh();
+                        Refresh(); // runtime refresh console
                     }
-                    if (player1.tries == 1)
-                    { Console.WriteLine("\a \nGAME OVER\n" + player1.playerName + " Loses!! \n"); }
+                    if (player1.tries == 1)// if user failed to guess after using all tries
+                    { Console.WriteLine("\a \nGAME OVER\n" + player1.playerName + " Loses!! \n"); } 
                 }
-                else
+                else // if user guesses word by entering letter one by one and consumed less tries than maxTries
                 {
                     player1.tries = 0;
                     ob.isGuessed = true;
@@ -78,6 +79,8 @@ namespace Hangman_CSharp
 
 
         }
+        
+        // Runtime refresh screen
         public static void Refresh()
         {
 
@@ -85,6 +88,7 @@ namespace Hangman_CSharp
             Program.TitleMenu();
         }
 
+        // Get secret word from WordRepository
         static string GetSecretWord(int Language)
         {
             var rand = new Random();
@@ -92,6 +96,7 @@ namespace Hangman_CSharp
 
             return WordsRepository.GetWords(Language)[wordIndex];
         }
+        // Display output on Console
         static void DisplayToPlayer(string secretWord, bool isGuessed, int tries, char[] guessedRight, StringBuilder guessedWrong, string playerName)
         {
             if (!isGuessed)
@@ -125,12 +130,14 @@ namespace Hangman_CSharp
             
         }
 
+        // checks if the player guesses right word by entering letters one by one (can be somehow merged with IfGuessRight)
         static bool IfGussed(string secretWord, char[] Guessed)
         {
             string wGuessed = new String(Guessed);
             bool result= wGuessed.Equals(secretWord) ? true : false;
             return result;
         }
+        // Checks if secretWord contains the user input or if it is same as user input in case user enters word 
         static int IfGuessRight(string secretWord, string guess)
         {
 
@@ -144,6 +151,7 @@ namespace Hangman_CSharp
             }
 
         }
+        // Updates in case user correctly guesses a letter
         static char[] UpdateguessedRight(char[] guessedRight, string guess, string secretWord)
         {
 
@@ -157,7 +165,7 @@ namespace Hangman_CSharp
 
             return guessedRight;
         }
-
+        // check is user has already guessed thi input
         static bool IfGuessExists(string guess, char[] guessedRight, StringBuilder guessedWrong)
         {
             bool result = false;
@@ -205,7 +213,7 @@ namespace Hangman_CSharp
             return result;
         }
 
-        
+        // check if the input is alphabetic
         static bool IsAlphabets(string inputString)
         {
             if (string.IsNullOrEmpty(inputString))
@@ -216,6 +224,8 @@ namespace Hangman_CSharp
                     return false;
             return true;
         }
+
+        // Takes guess from user only alphabets. 
         static string GetGuessFromPlayer(char[] guessedRight, StringBuilder guessedwrong)
         {
             string guess = "";
@@ -227,13 +237,9 @@ namespace Hangman_CSharp
                 ChkAlphabet = IsAlphabets(guess);
                 if (!ChkAlphabet) { Console.WriteLine("\n Invalid! Enter alphabetic guess"); }
             }
-            if (IfGuessExists(guess, guessedRight, guessedwrong))
-            { Console.WriteLine("\n Already guessed!! Try again. "); }
-            
-            return guess;
-           
+            return guess;           
         }
-
+        // Gets name from user or already sets as player one if user do not provide name
         static string GetPlayerName(long n)
         {
             string playerName;
