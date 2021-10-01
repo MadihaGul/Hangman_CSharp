@@ -19,7 +19,6 @@ namespace Hangman_CSharp
             int maxTries = 10;
             StringBuilder guessedWrong = new StringBuilder();
             Start ob = new Start();
-            WordsRepository.SaveFile(Language);
             Players player1 = new Players();
             player1.playerName = GetPlayerName(1);
 
