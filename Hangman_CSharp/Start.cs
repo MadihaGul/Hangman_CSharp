@@ -15,10 +15,11 @@ namespace Hangman_CSharp
         bool isGuessed = false;
         public static void StartGame(int Language) // Starts Game
         {
+            WordsRepository.SaveFile(Language);
             int maxTries = 10;
             StringBuilder guessedWrong = new StringBuilder();
             Start ob = new Start();
-            //WordsRepository.SaveFile(Language);
+            WordsRepository.SaveFile(Language);
             Players player1 = new Players();
             player1.playerName = GetPlayerName(1);
 
