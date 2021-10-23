@@ -38,7 +38,7 @@ namespace Hangman_CSharp
                 if (!IfGussed(secretWord,guessedRight))
                 {
                     DisplayToPlayer(secretWord, ob.isGuessed, player1.tries, guessedRight, guessedWrong, player1.playerName); // Displays output to user
-                    string guess = GetGuessFromPlayer(guessedRight, guessedWrong); // Takes input from user as guess
+                    string guess = GetGuessFromPlayer(); // Takes input from user as guess
                     bool ifGuessExists = IfGuessExists(guess, guessedRight, guessedWrong); // checks if the user has already guessed this input 
                     if (ifGuessExists) { player1.tries += 1; SystemSounds.Asterisk.Play(); Console.WriteLine("\n Already guessed!! Try again. "); } // no try is consumed
                     else
@@ -220,21 +220,21 @@ namespace Hangman_CSharp
                 return false;
 
             for (int i = 0; i < inputString.Length; i++)
-                if (!char.IsLetter(inputString[i]))
+                if (!char.IsLetter(inputString,i))
                     return false;
             return true;
         }
 
         // Takes guess from user only alphabets. 
-        static string GetGuessFromPlayer(char[] guessedRight, StringBuilder guessedwrong)
+        static string GetGuessFromPlayer()
         {
             string guess = "";
             bool ChkAlphabet = false;
 
             while (!ChkAlphabet)
             {
-                guess = Program.ChkUserinput(Console.ReadLine());
-                ChkAlphabet = IsAlphabets(guess);
+                guess = Console.ReadLine();
+                ChkAlphabet = IsAlphabets(guess);                 
                 if (!ChkAlphabet) { Console.WriteLine("\n Invalid! Enter alphabetic guess"); }
             }
             return guess;           

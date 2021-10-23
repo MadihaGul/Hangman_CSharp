@@ -35,7 +35,7 @@ namespace Hangman_CSharp
             }
             return data.Split(",");
         }
-        // Saves CSV file contents in string array based on language calls relevant word repository
+        // Saves CSV file contents in string array, based on language calls relevant word repository
         public static string[]  GetWords(int language)         
         {
             string[] words = language

@@ -87,7 +87,7 @@ namespace Hangman_CSharp
         // Checks if nothing entered by user 
         public static string ChkUserinput(string Userinput)
         {
-            while (Userinput == "")
+            while (string.IsNullOrEmpty(Userinput ))
             {
                 Console.WriteLine("\n Invalid! Try again.");
                 Userinput = Console.ReadLine();
